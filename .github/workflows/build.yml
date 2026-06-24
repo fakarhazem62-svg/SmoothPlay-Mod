@@ -23,16 +23,16 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: '8.8'
+          gradle-version: '8.10'
 
       - name: Build with Gradle
-        run: gradle build --no-daemon --stacktrace
+        run: gradle build --no-daemon
 
       - name: List build output
         run: |
-          echo "=== build/libs contents ==="
-          find . -name "*.jar" 2>/dev/null | head -30
-          ls -lah build/libs/ 2>/dev/null || echo "build/libs not found"
+          echo "=== build/libs ==="
+          ls -lah build/libs/ 2>/dev/null || echo "NO build/libs directory"
+          find . -name "*.jar" 2>/dev/null
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
