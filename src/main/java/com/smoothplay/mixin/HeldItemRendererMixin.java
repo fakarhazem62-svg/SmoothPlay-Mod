@@ -1,6 +1,5 @@
 package com.smoothplay.mixin;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,11 +16,11 @@ public class HeldItemRendererMixin {
     @Shadow private float equipProgressOffHand;
 
     /**
-     * Freeze equip progress values so the hand doesn't drift when moving camera.
-     * Removes the last source of hand sway that bobView doesn't cover.
+     * updateHeldItems() takes NO parameters in 1.21.1 — inject only gets CallbackInfo.
+     * Freezes equip progress so the hand stays still (no sway on camera move).
      */
     @Inject(method = "updateHeldItems", at = @At("RETURN"), require = 0)
-    private void smoothPlay_freezeHandSway(ClientPlayerEntity player, float tickDelta, CallbackInfo ci) {
+    private void smoothPlay_freezeHandSway(CallbackInfo ci) {
         equipProgressMainHand = prevEquipProgressMainHand;
         equipProgressOffHand  = prevEquipProgressOffHand;
     }
