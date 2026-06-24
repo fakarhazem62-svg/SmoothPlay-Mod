@@ -17,16 +17,12 @@ public class HeldItemRendererMixin {
     @Shadow private float equipProgressOffHand;
 
     /**
-     * Removes the hand sway that happens when the player moves their view.
-     * This is the last remaining source of camera shake after bobView is cancelled.
-     * We zero out the internal sway angles on every update tick.
+     * Freeze equip progress values so the hand doesn't drift when moving camera.
+     * Removes the last source of hand sway that bobView doesn't cover.
      */
-    @Inject(method = "updateHeldItems", at = @At("RETURN"))
-    private void smoothPlay_removeHandSway(ClientPlayerEntity player, float tickDelta, CallbackInfo ci) {
-        // The equip progress controls hand animation — keep those
-        // but zero out sway by clamping equip progress changes tightly
-        // This prevents the "hand drift" effect when rapidly moving the camera
+    @Inject(method = "updateHeldItems", at = @At("RETURN"), require = 0)
+    private void smoothPlay_freezeHandSway(ClientPlayerEntity player, float tickDelta, CallbackInfo ci) {
         equipProgressMainHand = prevEquipProgressMainHand;
-        equipProgressOffHand = prevEquipProgressOffHand;
+        equipProgressOffHand  = prevEquipProgressOffHand;
     }
 }
