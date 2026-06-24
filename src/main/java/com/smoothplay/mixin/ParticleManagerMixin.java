@@ -15,21 +15,17 @@ import java.util.Queue;
 @Mixin(ParticleManager.class)
 public class ParticleManagerMixin {
 
-    @Shadow
-    private Map<ParticleTextureSheet, Queue<Particle>> particles;
+    @Shadow private Map<ParticleTextureSheet, Queue<Particle>> particles;
 
-    private static final int MAX_PARTICLES = 256;
+    // Absolute maximum particles on screen — Minecraft's default is ~16,000
+    private static final int MAX_PARTICLES = 128;
 
-    /**
-     * Hard-cap total particles on screen to 256.
-     * Default Minecraft allows 16,000+ particles which destroys FPS.
-     */
     @Inject(
         method = "addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)Lnet/minecraft/client/particle/Particle;",
         at = @At("HEAD"),
         cancellable = true
     )
-    private void smoothPlay_limitParticles(CallbackInfoReturnable<Particle> cir) {
+    private void smoothPlay_hardCapParticles(CallbackInfoReturnable<Particle> cir) {
         if (particles == null) return;
         int total = 0;
         for (Queue<Particle> queue : particles.values()) {
