@@ -5,7 +5,10 @@
   "client": [
     "GameRendererMixin",
     "InGameHudMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "ParticleManagerMixin",
+    "WorldRendererMixin",
+    "EntityRenderDispatcherMixin"
   ],
   "injectors": {
     "defaultRequire": 1
