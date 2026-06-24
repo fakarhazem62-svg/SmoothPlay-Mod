@@ -7,6 +7,7 @@
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "MinecraftClientMixin",
+    "MouseMixin",
     "ParticleManagerMixin",
     "WorldRendererMixin",
     "EntityRenderDispatcherMixin"
