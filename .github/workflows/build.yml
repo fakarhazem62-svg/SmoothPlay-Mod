@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,20 +23,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-        working-directory: smoothplay-mod
-        continue-on-error: true
-
       - name: Build with Gradle
         run: gradle build --no-daemon
-        working-directory: smoothplay-mod
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: smoothplay-${{ github.sha }}
-          path: smoothplay-mod/build/libs/smoothplay-*.jar
+          path: build/libs/smoothplay-*.jar
           if-no-files-found: warn
 
   release:
@@ -56,12 +50,11 @@ jobs:
 
       - name: Build
         run: gradle build --no-daemon
-        working-directory: smoothplay-mod
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: smoothplay-mod/build/libs/smoothplay-*.jar
+          files: build/libs/smoothplay-*.jar
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
